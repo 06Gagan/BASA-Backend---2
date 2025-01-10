@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Forgot Password</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+  />
+</head>
+<body>
+  <div class="container mt-5" style="max-width: 400px;">
+    <h1 class="text-center">Forgot Password</h1>
+    <% if (message) { %>
+      <div class="alert <%= message.type === 'success' ? 'alert-success' : 'alert-danger' %>">
+        <%= message.text %>
+      </div>
+    <% } %>
+    <form action="/forget" method="POST">
+      <div class="form-group">
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          required
+          placeholder="Enter your email"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send Reset Link</button>
+    </form>
+  </div>
+</body>
+</html>

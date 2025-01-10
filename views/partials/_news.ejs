@@ -1,0 +1,201 @@
+<div>
+  <h3>News</h3>
+  <button
+    class="btn btn-success mb-3"
+    data-toggle="modal"
+    data-target="#addNewsModal"
+  >
+    Add News
+  </button>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Date</th>
+        <th>Link</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% news.forEach((item) => { %>
+        <tr>
+          <td><%= item.title %></td>
+          <td><%= item.content %></td>
+          <td><%= new Date(item.date).toLocaleDateString() %></td>
+          <td>
+            <% if (item.link) { %>
+              <a href="<%= item.link %>" target="_blank"><%= item.link %></a>
+            <% } %>
+          </td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm edit-news-btn"
+              data-id="<%= item.id %>"
+              data-title="<%= item.title %>"
+              data-content="<%= item.content %>"
+              data-date="<%= item.date ? item.date.toISOString().split('T')[0] : '' %>"
+              data-link="<%= item.link %>"
+            >
+              Edit
+            </button>
+            <form
+              action="/admin/news/delete/<%= item.id %>"
+              method="POST"
+              class="d-inline"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Modal -->
+<div
+  class="modal fade"
+  id="addNewsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addNewsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form action="/admin/news/add" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addNewsModalLabel">Add News</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              placeholder="e.g. New Achievement"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Content</label>
+            <textarea
+              name="content"
+              class="form-control"
+              placeholder="Short description..."
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Link (Optional)</label>
+            <input
+              type="url"
+              name="link"
+              class="form-control"
+              placeholder="https://example.com"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div
+  class="modal fade"
+  id="editNewsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editNewsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form id="edit-news-form" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editNewsModalLabel">Edit News</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-news-id" name="id" />
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              id="edit-news-title"
+              name="title"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Content</label>
+            <textarea
+              id="edit-news-content"
+              name="content"
+              class="form-control"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input
+              type="date"
+              id="edit-news-date"
+              name="date"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Link (Optional)</label>
+            <input
+              type="url"
+              id="edit-news-link"
+              name="link"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

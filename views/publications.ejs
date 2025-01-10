@@ -1,0 +1,39 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/css/publications.css">
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/nav') %>
+
+  <!-- Main Content -->
+  <section id="publications" class="main-content">
+    <div class="container">
+      <h2>Publications</h2>
+
+      <% let currentYear = null; %>
+      <% publications.forEach(publication => { %>
+        <% if (currentYear !== publication.year) { %>
+          <% if (currentYear) { %>
+            </div> <!-- Close the previous year's section -->
+          <% } %>
+          <div class="publication-category">
+            <h3><%= publication.year %></h3>
+          <% currentYear = publication.year; %>
+        <% } %>
+
+        <div class="publication-item">
+          <h5><%= publication.title || "No Title Provided" %></h5>
+          <p><%= publication.description || "No description available." %></p>
+          <% if (publication.link) { %>
+            <a href="<%= publication.link %>" target="_blank" class="publication-link">Read More</a>
+          <% } %>
+        </div>
+      <% }) %>
+
+      <% if (currentYear) { %>
+        </div> <!-- Close the last year's section -->
+      <% } %>
+    </div>
+  </section>
+
+  <script src="/scripts/common.js"></script>
+</body>

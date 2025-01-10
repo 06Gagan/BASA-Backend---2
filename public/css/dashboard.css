@@ -1,0 +1,33 @@
+.nav-pills .nav-link {
+  color: #495057 !important;
+  background-color: #fff !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 5px !important;
+  padding: 10px 15px !important;
+  margin-right: 5px !important;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #007bff !important;
+  color: #fff !important;
+  border-color: #007bff !important;
+  font-weight: bold !important;
+}
+
+.tab-content .tab-pane {
+  display: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.tab-content .tab-pane.show {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+.dashboard-title {
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  margin-bottom: 20px !important;
+}

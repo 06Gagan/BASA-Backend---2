@@ -1,0 +1,95 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/css/projects.css">
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/nav') %>
+
+  <!-- Main Content -->
+  <section id="projects" class="main-content">
+    <div class="container">
+      <h2>Research Projects</h2>
+
+      <!-- Government Organizations -->
+      <div class="project-category">
+        <h3>Government Organizations</h3>
+
+        <!-- Principal Investigator -->
+        <div class="sub-category">
+          <h4>As Principal Investigator</h4>
+          <% projects.forEach(project => { %>
+            <% if (project.type === "Government" && project.principal_investigator) { %>
+              <div class="project-item">
+                <h5><%= project.title %></h5>
+                <p>
+                  <% if (project.duration) { %><em>Duration:</em> <%= project.duration %> <% } %>
+                  <% if (project.agency) { %>| <em>Agency:</em> <%= project.agency %> <% } %>
+                  <% if (project.value_in_lakhs) { %>| <em>Value:</em> ₹<%= project.value_in_lakhs %> Lakhs <% } %>
+                </p>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+
+        <!-- Co-Investigator -->
+        <div class="sub-category">
+          <h4>As Co-Investigator</h4>
+          <% projects.forEach(project => { %>
+            <% if (project.type === "Government" && !project.principal_investigator) { %>
+              <div class="project-item">
+                <h5><%= project.title %></h5>
+                <p>
+                  <% if (project.duration) { %><em>Duration:</em> <%= project.duration %> <% } %>
+                  <% if (project.agency) { %>| <em>Agency:</em> <%= project.agency %> <% } %>
+                  <% if (project.value_in_lakhs) { %>| <em>Value:</em> ₹<%= project.value_in_lakhs %> Lakhs <% } %>
+                </p>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Private Industry -->
+      <div class="project-category">
+        <h3>Private Industry</h3>
+
+        <div class="sub-category">
+          <h4>As Principal Investigator</h4>
+          <% projects.forEach(project => { %>
+            <% if (project.type === "Private") { %>
+              <div class="project-item">
+                <h5><%= project.title %></h5>
+                <p>
+                  <% if (project.duration) { %><em>Duration:</em> <%= project.duration %> <% } %>
+                  <% if (project.agency) { %>| <em>Agency:</em> <%= project.agency %> <% } %>
+                  <% if (project.value_in_lakhs) { %>| <em>Value:</em> ₹<%= project.value_in_lakhs %> Lakhs <% } %>
+                </p>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Socially Relevant Projects -->
+      <div class="project-category">
+        <h3>Socially Relevant Projects</h3>
+
+        <div class="sub-category">
+          <% projects.forEach(project => { %>
+            <% if (project.category === "Socially relevant") { %>
+              <div class="project-item">
+                <h5><%= project.title %></h5>
+                <p>
+                  <% if (project.duration) { %><em>Duration:</em> <%= project.duration %> <% } %>
+                  <% if (project.agency) { %>| <em>Agency:</em> <%= project.agency %> <% } %>
+                  <% if (project.value_in_lakhs) { %>| <em>Value:</em> ₹<%= project.value_in_lakhs %> Lakhs <% } %>
+                </p>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="/scripts/common.js"></script>
+</body>

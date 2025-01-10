@@ -1,0 +1,66 @@
+/* aboutMe.css */
+
+.main-content {
+    padding: 40px 20px; /* Increased padding for more breathing room */
+    background-color: #f8f9fa; /* Light background for contrast */
+    color: #333; /* Dark text for readability */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+.main-content h1 {
+    font-size: 2.5em; /* Larger font for the main heading */
+    font-weight: bold;
+    color: #8B0000; /* Dark red color for emphasis */
+    margin-bottom: 10px;
+}
+
+.main-content h3 {
+    font-size: 1.5em; /* Slightly smaller for the subheading */
+    font-weight: 600;
+    color: #555; /* Softer color for the subheading */
+    margin-bottom: 20px;
+}
+
+.main-content p {
+    margin-bottom: 20px; /* Space out paragraphs for readability */
+}
+
+.main-content .lead {
+    font-size: 1.1em; /* Slightly larger text for emphasis */
+    color: #555; /* Consistent with the subheading color */
+    margin-bottom: 30px; /* Extra space after the lead paragraph */
+}
+
+.main-content p strong {
+    color: #000; /* Strong text in black for clarity */
+}
+
+.main-content ul {
+    list-style-type: disc; /* Use discs for list items */
+    padding-left: 20px; /* Indent list items */
+}
+
+.main-content ul li {
+    margin-bottom: 10px; /* Space between list items */
+    font-size: 1em; /* Regular font size for list items */
+}
+
+.main-content .education, .main-content .experience, .main-content .visiting-appointments, .main-content .awards {
+    margin-bottom: 30px; /* Space between sections */
+}
+
+.main-content .section-title {
+    font-size: 1.8em; /* Larger font for section titles */
+    font-weight: bold;
+    color: #8B0000; /* Consistent with the main title color */
+    margin-bottom: 15px; /* Space after section titles */
+    border-bottom: 2px solid #8B0000; /* Underline section titles */
+    padding-bottom: 5px; /* Padding for the underline */
+}
+
+.main-content .education p, .main-content .experience p, .main-content .visiting-appointments p, .main-content .awards p {
+    margin-bottom: 10px; /* Space between paragraphs in sections */
+    font-size: 1em; /* Regular font size */
+    color: #444; /* Slightly darker color for text */
+}

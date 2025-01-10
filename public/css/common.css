@@ -1,0 +1,163 @@
+/* Global Styles */
+body {
+    background-color: #f8f9fa;
+    padding-top: 68px;
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.header {
+    background-color: #343a40;
+    color: white;
+    padding: 4px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo-text-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.navbar-brand {
+    height: 60px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 100%;
+    max-height: 100%;
+    width: auto;
+}
+
+#text {
+    color: white;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar {
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 1rem;
+}
+
+/* Dropdown Styles */
+.navbar-nav .dropdown {
+    position: relative;
+}
+
+.navbar-nav .dropdown-toggle {
+    cursor: pointer;
+}
+
+.navbar-nav .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #343a40;
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .dropdown-content a {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.navbar-nav .dropdown-content a:hover {
+    background-color: #555;
+}
+
+/* Show dropdown on hover */
+.navbar-nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    padding-top: 68px;
+    z-index: 999;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    overflow-x: hidden;
+    transition: 0.5s;
+    width: 0;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 36px;
+}
+
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #343a40;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    display: none;
+}
+
+.openbtn:hover {
+    background-color: #444;
+}
+
+@media screen and (max-width: 768px) {
+    .openbtn {
+        display: block;
+    }
+
+    .navbar-nav {
+        display: none;
+    }
+
+    #text {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .navbar-nav {
+        display: flex !important;
+    }
+}
+
+  

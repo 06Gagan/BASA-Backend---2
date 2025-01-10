@@ -1,0 +1,27 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/css/news.css">
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/nav') %>
+
+  <!-- Main Content -->
+  <section id="news" class="main-content">
+    <div class="container">
+      <h2>News</h2>
+      <div class="news-list">
+        <% news.forEach(item => { %>
+          <div class="news-item">
+            <h3><%= item.title %></h3>
+            <p><%= item.content %></p>
+            <p class="news-date"><strong>Date:</strong> <%= new Date(item.date).toLocaleDateString() %></p>
+            <% if (item.link) { %>
+              <p><a href="<%= item.link %>" target="_blank" class="news-link">Read More</a></p>
+            <% } %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <script src="/scripts/common.js"></script>
+</body>

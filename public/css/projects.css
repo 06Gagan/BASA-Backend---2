@@ -1,0 +1,52 @@
+.main-content {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background color */
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #8B0000; /* Dark red color */
+    border-bottom: 2px solid #8B0000; /* Dark red underline */
+    padding-bottom: 10px;
+}
+
+.project-category h3 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #8B0000; /* Dark red color */
+    border-bottom: 2px solid #8B0000; /* Dark red underline */
+    padding-bottom: 10px;
+}
+
+.sub-category h4 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    padding-bottom: 8px;
+}
+
+.project-item {
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 3px solid #8B0000; /* Red left border */
+    margin-left: 20px;
+}
+
+.project-item h5 {
+    font-size: 1.5em;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.project-item p {
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.project-item p em {
+    font-style: italic;
+    color: #888;
+}

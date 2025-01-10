@@ -1,0 +1,254 @@
+<div>
+  <h3>Projects</h3>
+  <button
+    class="btn btn-success mb-3"
+    data-toggle="modal"
+    data-target="#addProjectModal"
+  >
+    Add Project
+  </button>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>PI?</th>
+        <th>Duration</th>
+        <th>Agency</th>
+        <th>Value (Lakhs)</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% projects.forEach((item) => { %>
+        <tr>
+          <td><%= item.title %></td>
+          <td><%= item.type %></td>
+          <td><%= item.category %></td>
+          <td><%= item.principal_investigator ? 'Yes' : 'No' %></td>
+          <td><%= item.duration %></td>
+          <td><%= item.agency %></td>
+          <td><%= item.value_in_lakhs %></td>
+          <td>
+            <!-- EDIT button -->
+            <button
+              class="btn btn-primary btn-sm edit-project-btn"
+              data-id="<%= item.id %>"
+              data-title="<%= item.title %>"
+              data-type="<%= item.type %>"
+              data-category="<%= item.category %>"
+              data-duration="<%= item.duration %>"
+              data-agency="<%= item.agency %>"
+              data-value="<%= item.value_in_lakhs %>"
+              data-principal_investigator="<%= item.principal_investigator ? 'true' : 'false' %>"
+            >
+              Edit
+            </button>
+
+            <form
+              action="/admin/projects/delete/<%= item.id %>"
+              method="POST"
+              class="d-inline"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Project Modal -->
+<div
+  class="modal fade"
+  id="addProjectModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addProjectModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form action="/admin/projects/add" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addProjectModalLabel">Add Project</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select name="type" class="form-control" required>
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category" class="form-control" required>
+              <option value="Socially relevant">Socially relevant</option>
+              <option value="Research">Research</option>
+            </select>
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="proj-pi"
+              name="principal_investigator"
+            />
+            <label class="form-check-label" for="proj-pi">
+              Principal Investigator?
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" name="duration" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Agency</label>
+            <input type="text" name="agency" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Value (Lakhs)</label>
+            <input
+              type="number"
+              step="0.01"
+              name="value_in_lakhs"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Project Modal -->
+<div
+  class="modal fade"
+  id="editProjectModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editProjectModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form id="edit-project-form" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProjectModalLabel">Edit Project</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-project-id" name="id" />
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              id="edit-project-title"
+              name="title"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="edit-project-type" name="type" class="form-control" required>
+              <option value="Government">Government</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="edit-project-category" name="category" class="form-control" required>
+              <option value="Socially relevant">Socially relevant</option>
+              <option value="Research">Research</option>
+            </select>
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="edit-project-pi"
+              name="principal_investigator"
+            />
+            <label class="form-check-label" for="edit-project-pi">
+              Principal Investigator?
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Duration</label>
+            <input
+              type="text"
+              id="edit-project-duration"
+              name="duration"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Agency</label>
+            <input
+              type="text"
+              id="edit-project-agency"
+              name="agency"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label>Value (Lakhs)</label>
+            <input
+              type="number"
+              step="0.01"
+              id="edit-project-value"
+              name="value_in_lakhs"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

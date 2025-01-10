@@ -1,0 +1,159 @@
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.container-fluid.main-content {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.left-column {
+    width: 350px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.right-column {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    height: 100%;
+    padding-top: 2px;
+    padding-bottom: 40px;
+}
+
+/* Styling for the compact info-box */
+.info-box {
+    background-color: #f9f9f9;
+    padding: 8px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.info-box h2 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.info-box p {
+    margin: 4px 0;
+}
+
+.profile-link {
+    display: block;
+    color: #8B0000;
+    text-decoration: none;
+    margin: 3px 0;
+}
+
+.profile-link:hover {
+    text-decoration: underline;
+    color: #555;
+}
+
+/* Additional styles for elements inside left column */
+.name-box {
+    background-color: #8B0000;
+    color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 0;
+}
+
+.profile-img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+/* Content Box Styling */
+.content-box {
+    padding: 20px;
+}
+
+.content-box h1, .content-box h2 {
+    color: #8B0000;
+    font-family: 'Merriweather', serif;
+}
+
+.content-box h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.content-box h2 {
+    font-size: 1.6em;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-left: 4px solid #8B0000;
+    margin-bottom: 15px;
+}
+
+.content-box p, .content-box ul {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.content-box ul {
+    padding-left: 20px;
+}
+
+.content-box a {
+    color: #8B0000;
+}
+
+.content-box a:hover {
+    color: #555;
+}
+
+/* Only addition: Mobile Responsive Design */
+@media (max-width: 1024px) {
+    body, html {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .container-fluid.main-content {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-column {
+        width: 100%;
+        height: auto;
+    }
+
+    .right-column {
+        width: 100%;
+        height: auto;
+    }
+    
+    .header {
+        margin-top: 0;
+    }
+    
+    .container {
+        margin-top: 0;
+    }
+}

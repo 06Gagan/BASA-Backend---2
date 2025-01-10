@@ -1,0 +1,235 @@
+<div>
+  <h3>People</h3>
+  <button
+    class="btn btn-success mb-3"
+    data-toggle="modal"
+    data-target="#addPersonModal"
+  >
+    Add Person
+  </button>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Current Position</th>
+        <th>Thesis Supervised?</th>
+        <th>Additional Info</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% people.forEach((item) => { %>
+        <tr>
+          <td><%= item.name %></td>
+          <td><%= item.type %></td>
+          <td><%= item.category %></td>
+          <td><%= item.current_position %></td>
+          <td><%= item.thesis_supervised ? 'Yes' : 'No' %></td>
+          <td><%= item.additional_info %></td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm edit-person-btn"
+              data-id="<%= item.id %>"
+              data-name="<%= item.name %>"
+              data-type="<%= item.type %>"
+              data-category="<%= item.category %>"
+              data-current_position="<%= item.current_position %>"
+              data-thesis_supervised="<%= item.thesis_supervised ? 'true' : 'false' %>"
+              data-additional_info="<%= item.additional_info %>"
+            >
+              Edit
+            </button>
+
+            <form
+              action="/admin/people/delete/<%= item.id %>"
+              method="POST"
+              class="d-inline"
+            >
+              <button type="submit" class="btn btn-danger btn-sm">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Person Modal -->
+<div
+  class="modal fade"
+  id="addPersonModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addPersonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form action="/admin/people/add" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPersonModalLabel">Add Person</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select name="type" class="form-control" required>
+              <option value="Post-Doc">Post-Doc</option>
+              <option value="PhD">PhD</option>
+              <option value="MS">MS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category" class="form-control" required>
+              <option value="Current">Current</option>
+              <option value="Past">Past</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Current Position</label>
+            <input type="text" name="current_position" class="form-control" />
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="person-thesis-supervised"
+              name="thesis_supervised"
+            />
+            <label class="form-check-label" for="person-thesis-supervised">
+              Thesis Supervised?
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Additional Info</label>
+            <textarea
+              name="additional_info"
+              class="form-control"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Person Modal -->
+<div
+  class="modal fade"
+  id="editPersonModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editPersonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form id="edit-person-form" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editPersonModalLabel">Edit Person</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit-person-id" name="id" />
+          <div class="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              id="edit-person-name"
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="edit-person-type" name="type" class="form-control" required>
+              <option value="Post-Doc">Post-Doc</option>
+              <option value="PhD">PhD</option>
+              <option value="MS">MS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="edit-person-category" name="category" class="form-control" required>
+              <option value="Current">Current</option>
+              <option value="Past">Past</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Current Position</label>
+            <input
+              type="text"
+              id="edit-person-current_position"
+              name="current_position"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="edit-person-thesis-supervised"
+              name="thesis_supervised"
+            />
+            <label class="form-check-label" for="edit-person-thesis-supervised">
+              Thesis Supervised?
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Additional Info</label>
+            <textarea
+              id="edit-person-additional_info"
+              name="additional_info"
+              class="form-control"
+            ></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
