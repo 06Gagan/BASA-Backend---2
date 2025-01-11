@@ -1,15 +1,12 @@
-const { Pool } = require("pg");
+const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  user: 'basa', // Your database username
+  host: '34.47.178.27', // Public IP of your GCP instance
+  database: 'basa', // Your database name
+  password: 'basa_backend', // Your database password
+  port: 5432, // Default PostgreSQL port
+  ssl: false, // Disable SSL
 });
 
-pool.connect()
-  .then(() => console.log("Connected to PostgreSQL database"))
-  .catch((err) => console.error("Connection error:", err));
-
 module.exports = pool;
-

@@ -22,8 +22,12 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || "default-secret",
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === "production" },
+    saveUninitialized: false, // Prevent unnecessary session creation
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
   })
 );
 

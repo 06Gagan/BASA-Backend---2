@@ -6,6 +6,9 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const EMAIL_USER = process.env.EMAIL_USER;
 
+// Replace "localhost:5000" with your deployed URL
+const BASE_URL = process.env.BASE_URL || "https://portfolio-app-435306826877.asia-south1.run.app";
+
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
@@ -29,7 +32,7 @@ const sendResetEmail = async (email, token) => {
     },
   });
 
-  const resetURL = `http://localhost:5000/reset-password?token=${token}`;
+  const resetURL = `${BASE_URL}/reset-password?token=${token}`;
   await transporter.sendMail({
     from: `"BASA Admin" <${EMAIL_USER}>`,
     to: email,

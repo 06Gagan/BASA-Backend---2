@@ -37,7 +37,13 @@ router.post(
         const isValidPassword = await bcrypt.compare(password, hashedPassword);
         if (isValidPassword) {
           req.session.isLoggedIn = true;
-          return res.redirect("/admin/dashboard");
+          console.log("Login successful. Session created."); // Debugging log
+          req.session.save((err) => {
+            if (err) console.error("Session save error:", err); // Debugging log
+            console.log("Session saved successfully. Redirecting to dashboard."); // Debugging log
+            return res.redirect("/admin/dashboard");
+          });
+          return;
         }
       }
 
@@ -78,9 +84,7 @@ router.post(
 
         resetTokens[email] = { token: hashedToken, expiresAt };
 
-        const resetLink = `http://localhost:5000/reset-password?token=${encodeURIComponent(
-          token
-        )}`;
+        const resetLink = `${process.env.BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
         await sendResetEmail(email, resetLink);
 
         return res.render("forget", {
@@ -128,12 +132,7 @@ router.post(
   ],
   async (req, res, next) => {
     try {
-      let { token, newPassword } = req.body;
-
-      // Extract the raw token if necessary
-      if (token.includes("http")) {
-        token = token.split("token=")[1];
-      }
+      const { token, newPassword } = req.body;
 
       const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
