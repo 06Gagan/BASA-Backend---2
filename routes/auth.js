@@ -17,50 +17,42 @@ router.get("/login", (req, res) => {
   res.render("login", { title: "Admin Login", message });
 });
 
-router.post(
-  "/login",
-  [body("password").notEmpty().withMessage("Password is required")],
-  async (req, res, next) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.render("login", {
-          title: "Admin Login",
-          message: { type: "danger", text: errors.array()[0].msg },
-        });
-      }
-
-      const { password } = req.body;
-
-      const hashedPassword = await getAdminPassword();
-      if (hashedPassword) {
-        const isValidPassword = await bcrypt.compare(password, hashedPassword);
-        if (isValidPassword) {
-          req.session.isLoggedIn = true;
-          console.log("Login successful. Session created."); // Debugging log
-          req.session.save((err) => {
-            if (err) console.error("Session save error:", err); // Debugging log
-            console.log("Session saved successfully. Redirecting to dashboard."); // Debugging log
-            return res.redirect("/admin/dashboard");
+router.post("/login", async (req, res, next) => {
+  try {
+    const { password } = req.body;
+    const hashedPassword = await getAdminPassword();
+    if (hashedPassword && (await bcrypt.compare(password, hashedPassword))) {
+      req.session.isLoggedIn = true;
+      console.log("Session data before save:", req.session);
+      req.session.save((err) => {
+        if (err) {
+          console.error("Error saving session:", err);
+          return res.render("login", {
+            title: "Admin Login",
+            message: { type: "danger", text: "Session error. Try again." },
           });
-          return;
         }
-      }
-
+        console.log("Session saved successfully.");
+        return res.redirect("/admin/dashboard");
+      });
+    } else {
       res.render("login", {
         title: "Admin Login",
         message: { type: "danger", text: "Invalid password" },
       });
-    } catch (err) {
-      next(err);
     }
+  } catch (err) {
+    next(err);
   }
-);
+});
+
 
 // Logout Route
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {
-    if (err) console.error(err);
+    if (err) {
+      console.error("Error destroying session:", err);
+    }
     res.redirect("/login");
   });
 });

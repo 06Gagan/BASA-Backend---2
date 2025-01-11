@@ -3,10 +3,6 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const RedisStore = require("connect-redis")(session);
-const Redis = require("ioredis");
-
-const redisClient = new Redis(process.env.REDIS_URL);
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
@@ -22,14 +18,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Using MemoryStore for session storage (Not recommended for production)
 app.use(
   session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "default-secret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, // Set to true if sessions aren't being created
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // Ensure this is false for local testing without HTTPS
       httpOnly: true,
       maxAge: 1000 * 60 * 60, // 1 hour
     },
