@@ -3,6 +3,10 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const RedisStore = require("connect-redis")(session);
+const Redis = require("ioredis");
+
+const redisClient = new Redis(process.env.REDIS_URL);
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
@@ -20,11 +24,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "default-secret",
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false, // Prevent unnecessary session creation
+    saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       maxAge: 1000 * 60 * 60, // 1 hour
     },
@@ -47,8 +52,7 @@ app.get("/teaching", (req, res) => {
   res.render("teaching", { title: "Teaching" });
 });
 
-//research pages routes
-
+// Research Pages Routes
 app.get("/research/evaporation-driven-self-assembly", (req, res) => {
   res.render("research/evaporation-driven-self-assembly");
 });
