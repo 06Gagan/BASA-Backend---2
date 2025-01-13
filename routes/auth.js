@@ -70,14 +70,14 @@ router.post(
       const { email } = req.body;
 
       if (email === process.env.EMAIL_USER) {
-        const token = crypto.randomBytes(32).toString("hex");
+        const token = crypto.randomBytes(32).toString("hex"); // Raw token
         const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
         const expiresAt = new Date(Date.now() + 3600000); // 1-hour expiry
 
         resetTokens[email] = { token: hashedToken, expiresAt };
 
-        const resetLink = `${process.env.BASE_URL}/reset-password?token=${encodeURIComponent(token)}`;
-        await sendResetEmail(email, resetLink);
+        // Only the raw token is passed
+        await sendResetEmail(email, token);
 
         return res.render("forget", {
           title: "Forgot Password",
