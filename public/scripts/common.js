@@ -1,22 +1,31 @@
-// Function to open the sidebar
-function openNav() {
+let isSidebarOpen = false; // Track sidebar state
+
+// Function to toggle the sidebar
+function toggleSidebar() {
   const sidebar = document.getElementById("mySidebar");
-  sidebar.style.width = "250px";
+  
+  if (!isSidebarOpen) {
+    sidebar.style.width = "250px";
+    isSidebarOpen = true;
 
-  // Ensure the research dropdown is closed when opening the sidebar on small screens
-  if (window.innerWidth <= 768) {
-    const dropdown = document.getElementById("researchDropdown");
-    dropdown.style.display = "none"; // Ensure it's closed
+    // Ensure the research dropdown is closed when opening the sidebar on small screens
+    if (window.innerWidth <= 768) {
+      const dropdown = document.getElementById("researchDropdown");
+      if (dropdown) dropdown.style.display = "none"; // Ensure it's closed
+    }
+
+    // Add a click-outside listener
+    setTimeout(() => document.addEventListener("click", closeSidebarOnClickOutside), 0);
+  } else {
+    closeNav(); // Call closeNav to handle closing behavior
   }
-
-  // Add a click-outside listener only once the sidebar is open
-  setTimeout(() => document.addEventListener("click", closeSidebarOnClickOutside), 0);
 }
 
 // Function to close the sidebar
 function closeNav() {
   const sidebar = document.getElementById("mySidebar");
   sidebar.style.width = "0";
+  isSidebarOpen = false;
 
   // Remove the click-outside listener when the sidebar is closed
   document.removeEventListener("click", closeSidebarOnClickOutside);
@@ -33,9 +42,10 @@ function closeSidebarOnClickOutside(event) {
   }
 }
 
-// Prevent immediate closure when clicking the open button to open the sidebar
+// Prevent immediate closure when clicking the open button to toggle the sidebar
 document.querySelector(".openbtn").addEventListener("click", function (event) {
   event.stopPropagation();
+  toggleSidebar();
 });
 
 // Function to toggle the research dropdown visibility within the sidebar

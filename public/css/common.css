@@ -19,8 +19,8 @@ body {
 .logo-text-container {
     display: flex;
     align-items: center;
-    flex-grow: 1;
     height: 100%;
+    white-space: nowrap;
 }
 
 .navbar-brand {
@@ -102,7 +102,7 @@ body {
     left: 0;
     background-color: #343a40;
     overflow-x: hidden;
-    transition: 0.5s;
+    transition: 0.3s ease-in-out;
     width: 0;
 }
 
@@ -145,8 +145,17 @@ body {
         display: block;
     }
 
-    .navbar-nav {
-        display: none;
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .logo-text-container {
+        order: 1;
+    }
+
+    .openbtn {
+        order: 3;
     }
 
     #text {
@@ -159,5 +168,4 @@ body {
         display: flex !important;
     }
 }
-
-  
+ 
