@@ -160,7 +160,19 @@ body {
     #text {
         font-size: 0.8rem;
     }
+
+    .header {
+        padding: 2px 0; /* Reduced padding */
+    }
+    .navbar-brand {
+        height: 50px; /* Reduced height */
+    }
+    .navbar-brand img {
+        height: 80%; /* Adjust the logo size proportionally */
+    }
 }
+
+
 
 @media screen and (min-width: 769px) {
     .navbar-nav {
