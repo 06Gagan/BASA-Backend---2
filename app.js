@@ -3,6 +3,8 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const pgPool = require("./config/db"); // Import the configured pool
+const PgSession = require("connect-pg-simple")(session); // Session store
 
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
@@ -18,16 +20,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Using MemoryStore for session storage (Not recommended for production)
+// Configure persistent session store using PostgreSQL
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "default-secret",
-    resave: false,
-    saveUninitialized: true, // Set to true if sessions aren't being created
+    store: new PgSession({
+      pool: pgPool, // Use the exported pool instance
+      tableName: "user_sessions", // Name of the session table (will be created automatically)
+      createTableIfMissing: true, // Creates table if it doesn't exist
+    }),
+    secret: process.env.SESSION_SECRET, // MUST be set in .env
+    resave: false, // Don't save session if unmodified
+    saveUninitialized: false, // Don't create session until something stored
     cookie: {
-      secure: false, // Ensure this is false for local testing without HTTPS
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60, // 1 hour
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production (requires HTTPS)
+      httpOnly: true, // Prevent client-side JS from reading the cookie
+      maxAge: 1000 * 60 * 60 * 24, // Session TTL: 24 hours
+      // sameSite: 'lax' // Consider adding SameSite attribute for CSRF protection
     },
   })
 );

@@ -1,15 +1,17 @@
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
-
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const EMAIL_USER = process.env.EMAIL_USER;
 
-// Ensure BASE_URL is clean (no trailing slash)
-const BASE_URL = (process.env.BASE_URL).replace(/\/$/, "");
+const BASE_URL = (process.env.BASE_URL || "").replace(/\/$/, "");
+
+if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !EMAIL_USER || !BASE_URL) {
+  console.error("Error: Missing required environment variables for email service.");
+}
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -19,19 +21,27 @@ const oAuth2Client = new google.auth.OAuth2(
 
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-const sendResetEmail = async (email, token) => {
-  try {
-    // Validate the token
-    if (!token) {
-      console.error("Error: Token is undefined or invalid.");
-      return;
-    }
+const sendResetEmail = async (recipientEmail, resetToken) => {
+  if (!recipientEmail || !resetToken) {
+      console.error("Error: Missing recipient email or reset token for sendResetEmail.");
+      return { success: false, error: "Missing recipient email or reset token." };
+  }
+  if (!EMAIL_USER) {
+       console.error("Error: EMAIL_USER environment variable is not set.");
+       return { success: false, error: "Email sender not configured." };
+  }
 
-    // Get the access token
+  try {
+    console.log("Attempting to get access token...");
     const accessTokenResponse = await oAuth2Client.getAccessToken();
     const accessToken = accessTokenResponse?.token || accessTokenResponse?.credentials?.access_token;
 
-    // Create the transporter
+    if (!accessToken) {
+        console.error("Error: Could not retrieve access token.", accessTokenResponse);
+        return { success: false, error: "Could not retrieve access token." };
+    }
+    console.log("Access token retrieved successfully.");
+
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
@@ -40,30 +50,51 @@ const sendResetEmail = async (email, token) => {
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refreshToken: REFRESH_TOKEN,
-        accessToken,
+        accessToken: accessToken,
       },
     });
 
-    // Construct the reset URL
-    const resetURL = `${BASE_URL}/reset-password?token=${token}`;
+    const resetURL = `${BASE_URL}/reset-password?token=${resetToken}`;
+    console.log(`Constructed Reset URL: ${resetURL}`);
 
-    // Send the reset email
-    await transporter.sendMail({
+    const mailOptions = {
       from: `"BASA Admin" <${EMAIL_USER}>`,
-      to: email,
-      subject: "Password Reset",
-      html: `<p>Click <a href="${resetURL}">here</a> to reset your password.</p>`,
-    });
+      to: recipientEmail,
+      subject: "Password Reset Request",
+      html: `<p>You requested a password reset.</p><p>Click <a href="${resetURL}">here</a> to reset your password.</p><p>If you did not request this, please ignore this email.</p>`,
+    };
+
+    console.log(`Sending reset email to ${recipientEmail}...`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Password reset email sent successfully:", info.messageId);
+    return { success: true, messageId: info.messageId };
+
   } catch (err) {
-    console.error("Error sending reset email:", err);
+    console.error("Error sending password reset email:", err.response?.data || err.message || err);
+     return { success: false, error: err.message || "Unknown error sending email." };
   }
 };
 
-const sendConfirmationEmail = async (email) => {
+const sendConfirmationEmail = async (recipientEmail) => {
+  if (!recipientEmail) {
+      console.error("Error: Missing recipient email for sendConfirmationEmail.");
+      return { success: false, error: "Missing recipient email." };
+  }
+   if (!EMAIL_USER) {
+       console.error("Error: EMAIL_USER environment variable is not set.");
+       return { success: false, error: "Email sender not configured." };
+  }
+
   try {
-    // Get the access token
+    console.log("Attempting to get access token for confirmation email...");
     const accessTokenResponse = await oAuth2Client.getAccessToken();
     const accessToken = accessTokenResponse?.token || accessTokenResponse?.credentials?.access_token;
+
+     if (!accessToken) {
+        console.error("Error: Could not retrieve access token for confirmation.", accessTokenResponse);
+        return { success: false, error: "Could not retrieve access token." };
+    }
+    console.log("Access token retrieved successfully for confirmation.");
 
     const transporter = nodemailer.createTransport({
       service: "Gmail",
@@ -73,20 +104,25 @@ const sendConfirmationEmail = async (email) => {
         clientId: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         refreshToken: REFRESH_TOKEN,
-        accessToken,
+        accessToken: accessToken,
       },
     });
 
-    await transporter.sendMail({
-      from: `"BASA Admin" <${EMAIL_USER}>`,
-      to: email,
-      subject: "Password Successfully Changed",
-      html: `<p>Your password has been successfully updated.</p>`,
-    });
+    const mailOptions = {
+        from: `"BASA Admin" <${EMAIL_USER}>`,
+        to: recipientEmail,
+        subject: "Password Successfully Changed",
+        html: `<p>Your password for Portfolio Website has been successfully updated.</p>`,
+    };
 
-    console.log("Confirmation email sent successfully!");
+    console.log(`Sending password change confirmation email to ${recipientEmail}...`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Confirmation email sent successfully:", info.messageId);
+    return { success: true, messageId: info.messageId };
+
   } catch (err) {
-    console.error("Error sending confirmation email:", err);
+    console.error("Error sending confirmation email:", err.response?.data || err.message || err);
+    return { success: false, error: err.message || "Unknown error sending email." };
   }
 };
 
